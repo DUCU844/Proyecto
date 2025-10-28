@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=RobotTest
+comment0.text=\r\n\ Tests\ for\ the\ Robot\ class.\r\n\ Verifies\ basic\ behavior\:\ position,\ movement,\ and\ reset.\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ testInitialPosition()
+comment3.text=\r\n\ Verifica\ que\ el\ robot\ se\ cree\ en\ la\ posici\u00F3n\ inicial\ correcta.\r\n
+comment4.params=
+comment4.target=void\ testMoveTo()
+comment4.text=\r\n\ Verifica\ que\ el\ m\u00E9todo\ moveTo\ cambie\ la\ posici\u00F3n\ correctamente.\r\n
+comment5.params=
+comment5.target=void\ testReset()
+comment5.text=\r\n\ Verifica\ que\ el\ m\u00E9todo\ reset()\ restaure\ la\ posici\u00F3n\ inicial.\r\n
+numComments=6

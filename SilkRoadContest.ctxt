@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=SilkRoadContest
+comment1.params=
+comment1.target=SilkRoadContest()
+comment2.params=utilidades
+comment2.target=int\ solve(int[])
+comment2.text=\r\n\ Calcula\ la\ m\u00E1xima\ utilidad\ diaria.\r\n\ Cada\ posici\u00F3n\ del\ arreglo\ representa\ la\ utilidad\ de\ un\ d\u00EDa.\r\n\ No\ se\ usan\ valores\ negativos.\r\n\ \r\n\ @param\ utilidades\ arreglo\ con\ las\ utilidades\ de\ cada\ d\u00EDa.\r\n\ @return\ la\ suma\ m\u00E1xima\ de\ utilidades\ consecutivas.\r\n
+comment3.params=utilidades
+comment3.target=void\ simulate(int[])
+comment3.text=\r\n\ Simula\ el\ c\u00E1lculo\ de\ la\ utilidad.\r\n\ Muestra\ los\ valores\ y\ el\ resultado\ final.\r\n
+numComments=4

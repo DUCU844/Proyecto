@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Store
+comment0.text=\r\n\ Clase\ Store\r\n\ Representa\ una\ tienda\ en\ la\ Ruta\ de\ la\ Seda\ (versi\u00F3n\ con\ coordenadas\ de\ pantalla).\r\n
+comment1.params=position\ tenges\ x\ y
+comment1.target=Store(int,\ int,\ int,\ int)
+comment2.params=
+comment2.target=void\ resupply()
+comment3.params=
+comment3.target=int\ collect()
+comment3.text=\r\n\ Simulates\ money\ collection\ from\ the\ store.\r\n\ Returns\ the\ amount\ of\ tenges\ collected\ and\ sets\ it\ to\ zero.\r\n
+comment4.params=
+comment4.target=void\ reset()
+comment5.params=newX\ newY
+comment5.target=void\ moveTo(int,\ int)
+comment6.params=
+comment6.target=void\ delete()
+comment7.params=
+comment7.target=int\ getScreenX()
+comment7.text=\r\n\ Returns\ the\ current\ X\ coordinate\ of\ the\ store\ on\ screen.\r\n
+comment8.params=
+comment8.target=int\ getScreenY()
+comment8.text=\r\n\ Returns\ the\ current\ Y\ coordinate\ of\ the\ store\ on\ screen.\r\n
+comment9.params=
+comment9.target=int\ getTenges()
+comment9.text=\r\n\ Returns\ the\ current\ amount\ of\ tenges\ (money)\ in\ the\ store.\r\n
+numComments=10

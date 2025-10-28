@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=StoreTest
+comment0.text=\r\n\ Unit\ tests\ for\ the\ Store\ class.\r\n\ \r\n\ Verifies\:\r\n\ -\ Initial\ money\ (tenges).\r\n\ -\ collect(),\ resupply()\ and\ reset()\ behavior.\r\n\ -\ Position\ and\ coordinates.\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ testInitialTenges()
+comment4.params=
+comment4.target=void\ testCollect()
+comment5.params=
+comment5.target=void\ testResupply()
+comment6.params=
+comment6.target=void\ testReset()
+comment7.params=
+comment7.target=void\ testCoordinates()
+numComments=8

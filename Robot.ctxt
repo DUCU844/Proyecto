@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Robot
+comment0.text=\r\n\ Clase\ Robot\r\n\ Versi\u00F3n\ que\ conserva\ coordenadas\ en\ pantalla\ y\ puede\ moverse\ a\ una\r\n\ posici\u00F3n\ l\u00F3gica\ actualizando\ la\ representaci\u00F3n\ gr\u00E1fica.\r\n
+comment1.params=x\ y\ size
+comment1.target=Robot(int,\ int,\ int)
+comment2.params=newX\ newY
+comment2.target=void\ moveTo(int,\ int)
+comment3.params=
+comment3.target=void\ reset()
+comment4.params=
+comment4.target=void\ delete()
+comment5.params=
+comment5.target=void\ blink()
+numComments=6
