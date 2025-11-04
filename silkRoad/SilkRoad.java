@@ -130,6 +130,9 @@ public class SilkRoad {
             int x = centerX + (int)(radius * Math.cos(angle));
             int y = centerY + (int)(radius * Math.sin(angle));
             
+            storePositions[i][0] = x;
+            storePositions[i][1] = y;
+            
             // Obtener color único
             String color = storeColors[storeColorIndex % storeColors.length];
             storeColorIndex++;
