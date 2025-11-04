@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Fighter
+comment0.text=\r\n\ Only\ robots\ with\ higher\ tenges\ can\ collect\ the\ tenges\ from\ this\ store.\r\n\ \r\n\ @author\ Beltr\u00E1n-Ducuara\r\n\ @version\ 2025-2\r\n
+comment1.params=position\ tenges\ x\ y\ color
+comment1.target=Fighter(int,\ int,\ int,\ int,\ java.lang.String)
+comment2.params=robotMoney
+comment2.target=int\ collect(int)
+comment2.text=\r\n\ Solo\ entrega\ su\ dinero\ si\ el\ robot\ tiene\ m\u00E1s\ que\ la\ tienda.\r\n\ @param\ robotMoney\ dinero\ actual\ del\ robot\r\n\ @return\ dinero\ recolectado\ (0\ si\ no\ tiene\ derecho)\r\n
+numComments=3

@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Rectangle
+comment0.text=\r\n\ A\ rectangle\ that\ can\ be\ manipulated\ and\ that\ draws\ itself\ on\ a\ canvas.\r\n\ \r\n\ @author\ \ Michael\ Kolling\ and\ David\ J.\ Barnes\ (Modified)\r\n\ @version\ 2.0\ -\ Refactored\ with\ inheritance\r\n
+comment1.params=
+comment1.target=Rectangle()
+comment10.params=
+comment10.target=void\ draw()
+comment11.params=
+comment11.target=void\ erase()
+comment2.params=
+comment2.target=void\ makeVisible()
+comment3.params=
+comment3.target=void\ makeInvisible()
+comment4.params=distance
+comment4.target=void\ moveHorizontal(int)
+comment5.params=distance
+comment5.target=void\ moveVertical(int)
+comment6.params=distance
+comment6.target=void\ slowMoveHorizontal(int)
+comment7.params=distance
+comment7.target=void\ slowMoveVertical(int)
+comment8.params=newColor
+comment8.target=void\ changeColor(java.lang.String)
+comment9.params=newHeight\ newWidth
+comment9.target=void\ changeSize(int,\ int)
+numComments=12

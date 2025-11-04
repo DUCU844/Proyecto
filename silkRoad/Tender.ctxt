@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Tender
+comment0.text=\r\n\ This\ robot\ only\ collects\ half\ of\ the\ profits\r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @version\ 2025-2\r\n
+comment1.params=x\ y\ size\ color
+comment1.target=Tender(int,\ int,\ int,\ java.lang.String)
+comment2.params=store
+comment2.target=int\ collectFrom(Store)
+numComments=3

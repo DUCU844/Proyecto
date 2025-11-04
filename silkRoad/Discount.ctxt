@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Discount
+comment0.text=\r\n\ This\ is\ a\ Store\ who\ delivers\ only\ 75%\ of\ its\ tenges\r\n\ \r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @2025-2\r\n
+comment1.params=position\ tenges\ x\ y\ color
+comment1.target=Discount(int,\ int,\ int,\ int,\ java.lang.String)
+comment2.params=
+comment2.target=int\ collect()
+numComments=3

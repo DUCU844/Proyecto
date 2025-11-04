@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=NeverBack
+comment0.text=\r\n\ This\ robot\ never\ turns\ back\r\n\ \r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @version\ 2025-2\r\n
+comment1.params=x\ y\ size\ color
+comment1.target=NeverBack(int,\ int,\ int,\ java.lang.String)
+comment2.params=newX\ newY
+comment2.target=void\ moveTo(int,\ int)
+numComments=3

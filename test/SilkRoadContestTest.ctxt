@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=SilkRoadContestTest
+comment0.text=\r\n\ Pruebas\ unitarias\ para\ SilkRoadContest\r\n\ \r\n\ @author\ Beltr\u00E1n-Ducuara\r\n\ @version\ 2025-2\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ shouldReturnZeroForEmptyArray()
+comment3.text=\r\n\ Test\:\ Soluci\u00F3n\ con\ array\ vac\u00EDo\r\n
+comment4.params=
+comment4.target=void\ shouldReturnZeroForNullArray()
+comment4.text=\r\n\ Test\:\ Soluci\u00F3n\ con\ array\ null\r\n
+comment5.params=
+comment5.target=void\ shouldCalculateCorrectMaxProfit()
+comment5.text=\r\n\ Test\:\ Soluci\u00F3n\ con\ utilidades\ positivas\r\n
+comment6.params=
+comment6.target=void\ shouldHandleSingleElement()
+comment6.text=\r\n\ Test\:\ Soluci\u00F3n\ con\ un\ solo\ elemento\r\n
+comment7.params=
+comment7.target=void\ shouldHandleEqualValues()
+comment7.text=\r\n\ Test\:\ Soluci\u00F3n\ con\ todas\ utilidades\ iguales\r\n
+comment8.params=
+comment8.target=void\ shouldSimulateWithoutErrors()
+comment8.text=\r\n\ Test\:\ Simulate\ no\ lanza\ excepciones\r\n
+numComments=9

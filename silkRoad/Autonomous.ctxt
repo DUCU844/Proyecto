@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=Autonomous
+comment0.text=\r\n\ This\ store\ chooses\ the\ position\ where\ it\ wants\ to\ be\ located,\ not\ the\ one\ it\ is\ told.\r\n\ \r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @version\ 2025-2\r\n
+comment1.params=position\ tenges\ x\ y\ color
+comment1.target=Autonomous(int,\ int,\ int,\ int,\ java.lang.String)
+numComments=2
