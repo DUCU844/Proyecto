@@ -9,7 +9,7 @@ package silkRoad;
 public class NeverBack extends Robot {
 
     public NeverBack(int x, int y, int size, String color) {
-        super(x, y, size, color);
+        super(x, y, size, "magenta");
     }
 
     @Override

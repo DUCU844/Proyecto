@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import shapes.Rectangle;
 
 /**
  * Clase SilkRoad
@@ -30,6 +31,10 @@ public class SilkRoad {
     private int robotColorIndex = 0;
     
     private SpiralPath spiralPath;
+    
+    private Rectangle progressBackground;
+    private Rectangle progressBar;
+    private int maxPossibleProfit;
     
     /**
     public void testPath() {
@@ -60,6 +65,18 @@ public class SilkRoad {
         
         spiralPath = new SpiralPath();
         spiralPath.changeColor("black");
+        
+        progressBackground = new Rectangle();
+        progressBackground.changeColor("gray");
+        progressBackground.changeSize(25, 700);
+        progressBackground.moveHorizontal(50 - 70);
+        progressBackground.moveVertical(550 - 15);
+        
+        progressBar = new Rectangle();
+        progressBar.changeColor("green");
+        progressBar.changeSize(25, 0);
+        progressBar.moveHorizontal(50 - 70);
+        progressBar.moveVertical(550 - 15);
         
         Canvas.getCanvas();
     }
@@ -93,6 +110,11 @@ public class SilkRoad {
         profit = 0;
         storeColorIndex = 0;
         robotColorIndex = 0;
+        
+        maxPossibleProfit = 0;
+        for (int i = 0; i < tengesTiendas.length; i++) {
+            maxPossibleProfit += tengesTiendas[i];
+        }
         
         // Crear tiendas en posiciones calculadas
         int centerX = 400;
@@ -131,6 +153,10 @@ public class SilkRoad {
             Robot newRobot = new Robot(xPos, yPos, 25, color);
             robots.add(newRobot);
         }
+        
+        updateProgressBar();
+        progressBackground.makeVisible();
+        progressBar.makeVisible();
         
     }
 
@@ -350,6 +376,8 @@ public class SilkRoad {
             }
         }
     
+        updateProgressBar();
+        
         // hacemos que el mejor parpadee
         if (robotMasExitoso != null) {
             robotMasExitoso.blink();
@@ -385,6 +413,8 @@ public class SilkRoad {
             robots.get(i).reset();
         }
         profit = 0;
+        
+        updateProgressBar();
     }
 
     /**
@@ -451,7 +481,12 @@ public class SilkRoad {
     public void makeVisible() {
         this.visible = true;
         Canvas.getCanvas().setVisible(true);
+        
         spiralPath.makeVisible();
+        
+        progressBackground.makeVisible();
+        progressBar.makeVisible();
+        
         for (int i = 0; i < stores.size(); i++) {
             stores.get(i).makeVisible();
         }
@@ -466,6 +501,10 @@ public class SilkRoad {
     public void makeInvisible() {
         this.visible = false;
         spiralPath.makeInvisible();
+        
+        progressBackground.makeInvisible();
+        progressBar.makeInvisible();
+        
         for (int i = 0; i < stores.size(); i++) {
             stores.get(i).delete();
         }
@@ -474,11 +513,40 @@ public class SilkRoad {
         }
     }
 
+    private void updateProgressBar() {
+        if (maxPossibleProfit == 0) {
+            maxPossibleProfit = 1; // Evitar división por cero
+        }
+        
+        // Calcular ancho de la barra (máximo 700 píxeles)
+        int barWidth = (int)((double)profit / maxPossibleProfit * 700);
+        barWidth = Math.min(barWidth, 700); // No exceder el ancho máximo
+        
+        progressBar.changeSize(25, barWidth);
+        
+        // Cambiar color según el progreso
+        double percentage = (double)profit / maxPossibleProfit;
+        
+        if (percentage >= 1.0) {
+            progressBar.changeColor("green");  // 100% = verde
+        } else if (percentage >= 0.75) {
+            progressBar.changeColor("blue");    // 75-99% = azul
+        } else if (percentage >= 0.50) {
+            progressBar.changeColor("cyan");    // 50-74% = cyan
+        } else {
+            progressBar.changeColor("yellow");   // 0-49% = amarillo
+        }
+    }
+    
     /**
      * Finishes the simulator (removes everything).
      */
     public void finish() {
         spiralPath.clear();
+        
+        progressBackground.makeInvisible();
+        progressBar.makeInvisible();
+        
         for (int i = 0; i < stores.size(); i++) {
             stores.get(i).delete();
         }

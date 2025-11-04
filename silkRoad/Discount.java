@@ -8,7 +8,7 @@ package silkRoad;
  */
 public class Discount extends Store {
     public Discount(int position, int tenges, int x, int y, String color) {
-        super(position, tenges, x, y, color);
+        super(position, tenges, x, y, "orange");
     }
 
     @Override

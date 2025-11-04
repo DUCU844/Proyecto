@@ -8,7 +8,7 @@ package silkRoad;
 public class Tender extends Robot {
 
     public Tender(int x, int y, int size, String color) {
-        super(x, y, size, color);
+        super(x, y, size, "pink");
     }
 
     // Método que se llama cuando recolecta dinero

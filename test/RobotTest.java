@@ -16,7 +16,7 @@ public class RobotTest {
     @Before
     public void setUp() {
         // Crea un robot en (50, 100)
-        robot = new Robot(50, 100, 20, "red");
+        robot = new Robot(50, 100, 20, "blue");
     }
 
     @After

@@ -9,7 +9,7 @@ package silkRoad;
 public class Fighter extends Store {
 
     public Fighter(int position, int tenges, int x, int y, String color) {
-        super(position, tenges, x, y, color);
+        super(position, tenges, x, y, "red");
     }
 
     /**

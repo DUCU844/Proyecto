@@ -20,7 +20,7 @@ public class StoreTest {
     @Before
     public void setUp() {
         // Crea una tienda en (20, 20) con 50 tenges
-        store = new Store(1, 50, 20, 20, "blue");
+        store = new Store(1, 50, 20, 20, "green");
     }
 
     @After
