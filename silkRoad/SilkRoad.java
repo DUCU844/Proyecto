@@ -14,8 +14,7 @@ import shapes.Rectangle;
  * record gains and gaps in the stores.
  * 
  * @author Beltrán-Ducuara
- * @date 2025-2
- * @version 1.0
+ * @version 2025-2
  */
 public class SilkRoad {
 
@@ -186,7 +185,10 @@ public class SilkRoad {
      * @param location position in x
      * @param tenges initial amount
      */
-    public void placeStore(String type, int location, int tenges) {
+    public void placeStore(String type, int location, int tenges) throws SilkRoadException {
+        if (tenges < 0) {
+            throw new SilkRoadException(SilkRoadException.INVALID_TENGES_EXCEPTION);
+        }
         String color = storeColors[storeColorIndex % storeColors.length];
         storeColorIndex++;
     
@@ -571,5 +573,4 @@ public class SilkRoad {
         contest.simulate(utilidades); 
     }
 }
-
 

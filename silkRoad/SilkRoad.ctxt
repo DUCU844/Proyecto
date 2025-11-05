@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=SilkRoad
-comment0.text=\r\n\ Clase\ SilkRoad\r\n\ It\ represents\ a\ Silk\ Road\ simulator\ with\ shops\ and\ robots.\r\n\ It\ allows\ you\ to\ add,\ move,\ and\ delete\ robots\ and\ stores,\ as\ well\ as\r\n\ record\ gains\ and\ gaps\ in\ the\ stores.\r\n\ \r\n\ @author\ Beltr\u00E1n-Ducuara\r\n\ @date\ 2025-2\r\n\ @version\ 1.0\r\n
+comment0.text=\r\n\ Clase\ SilkRoad\r\n\ It\ represents\ a\ Silk\ Road\ simulator\ with\ shops\ and\ robots.\r\n\ It\ allows\ you\ to\ add,\ move,\ and\ delete\ robots\ and\ stores,\ as\ well\ as\r\n\ record\ gains\ and\ gaps\ in\ the\ stores.\r\n\ \r\n\ @author\ Beltr\u00E1n-Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=
 comment1.target=SilkRoad()
 comment1.text=\r\n\ Constructor\:\ creates\ the\ SilkRoad\ simulator.\r\n
