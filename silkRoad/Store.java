@@ -92,6 +92,10 @@ public class Store {
         dibujo.makeInvisible();
     }
     
+        public int getPosition() {
+        return position;
+    }
+    
     /**
      * Returns the current X coordinate of the store on screen.
      */
@@ -105,11 +109,16 @@ public class Store {
     public int getScreenY() {
         return screenY;
     }
+    
     /**
      * Returns the current amount of tenges (money) in the store.
      */
     public int getTenges() {
         return tenges;
+    }
+    
+    public int getInitialTenges() {
+        return initialTenges;
     }
 
 }

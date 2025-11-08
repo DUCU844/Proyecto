@@ -8,52 +8,114 @@ import java.util.TreeMap;
 import shapes.Rectangle;
 
 /**
- * Clase SilkRoad
- * It represents a Silk Road simulator with shops and robots.
- * It allows you to add, move, and delete robots and stores, as well as
- * record gains and gaps in the stores.
+ * Class SilkRoad
+ * Represents a simulator of the Silk Road with stores and robots.
+ * It allows creating, managing, and visualizing the behavior of stores and robots,
+ * including profits and movements in a square spiral pattern.
  * 
- * @author Beltrán-Ducuara
- * @version 2025-2
+ * The simulator provides functionalities to:
+ * - Add or remove stores and robots.
+ * - Move robots along a spiral route.
+ * - Collect profits and display progress.
+ * - Simulate contests and calculate daily maximum profit.
+ * 
+ * @author 
+ *  Beltrán-Ducuara
+ * @version 1.0
+ * @date 2025-2
  */
 public class SilkRoad {
-
-    private ArrayList<Store> stores;
-    private ArrayList<Robot> robots;
-    private boolean visible;
-    private int profit;
-    private SilkRoadContest contest;
     
+    // ----- Attributes -----
+    
+    private int length;  // Silk road length (defines scale and store spacing)
+    private ArrayList<Store> stores;  // List of stores on the silk road
+    private ArrayList<Robot> robots;  // List of robots operating on the road
+    private boolean visible;          // Visibility flag for GUI mode
+    private int profit;               // Accumulated profit value
+    private SilkRoadContest contest;  // Contest instance to simulate problem
+    
+    // Color arrays to assign different colors automatically
     private String[] storeColors = {"red", "blue", "green", "magenta", "yellow", "orange", "pink", "cyan"};
     private String[] robotColors = {"blue", "cyan", "magenta", "orange"};
     private int storeColorIndex = 0;
     private int robotColorIndex = 0;
     
-    private SpiralPath spiralPath;
+    private SpiralPath spiralPath;  // Draws and manages the spiral path
+    private ArrayList<int[]> spiralPositions; // Stores the coordinates of each spiral position
     
-    private Rectangle progressBackground;
-    private Rectangle progressBar;
-    private int maxPossibleProfit;
+    // Progress bar representation
+    private Rectangle progressBackground; // Background of the progress bar
+    private Rectangle progressBar;        // Filled part of the bar indicating gain
+    private int maxPossibleProfit;        // Used to calculate proportional bar filling
     
     /**
-    public void testPath() {
-        System.out.println("\n===== TEST DIRECTO DEL CAMINO =====\n");
+     * Constructor: creates the SilkRoad simulator with a given length.
+     * Initializes all graphical and logical components.
+     * 
+     * @param length the length of the silk road
+     */
+    public SilkRoad(int length) {
+        this.length = length;
+        stores = new ArrayList<Store>();
+        robots = new ArrayList<Robot>();
+        visible = true;
+        profit = 0;
+        contest = new SilkRoadContest();
+        spiralPositions = new ArrayList<int[]>();
         
-        int[][] points = {
-            {200, 200},
-            {400, 200}
-        };
+        spiralPath = new SpiralPath();
+        spiralPath.changeColor("black");
         
-        spiralPath.changeColor("red");
-        spiralPath.drawPath(points);
-        spiralPath.makeVisible();
+        // Configura el fondo de la barra de progreso
+        progressBackground = new Rectangle();
+        progressBackground.changeColor("gray");
+        progressBackground.changeSize(25, 700);
+        progressBackground.moveHorizontal(50 - 70);
+        progressBackground.moveVertical(550 - 15);
         
-        System.out.println("\n===== FIN DEL TEST =====\n");
+        // Configura la barra verde que representa la ganancia
+        progressBar = new Rectangle();
+        progressBar.changeColor("green");
+        progressBar.changeSize(25, 0);
+        progressBar.moveHorizontal(50 - 70);
+        progressBar.moveVertical(550 - 15);
+        
+        // Inicializa el lienzo para dibujar elementos
+        Canvas.getCanvas();
     }
-    */
+    
+    /**
+     * Constructor: creates the SilkRoad simulator using an array of days.
+     * Massive constructor for Contest. Only creates normal stores.
+     * 
+     * @param days array where each row is [location, tenges]
+     */
+    public SilkRoad(int[][] days) {
+        this(1000); // Calls main constructor with default road length
+        
+        if (days == null || days.length == 0) {
+            return;
+        }
+        
+        // Crea tiendas normales según los datos del arreglo
+        for (int i = 0; i < days.length; i++) {
+            if (days[i] != null && days[i].length >= 2) {
+                int location = days[i][0];
+                int tenges = days[i][1];
+                
+                try {
+                    placeStore(location, tenges);
+                } catch (SilkRoadException e) {
+                    System.err.println("Error creating store from days: " + e.getMessage());
+                }
+            }
+        }
+    }
 
     /**
-     * Constructor: creates the SilkRoad simulator.
+     * Default constructor: creates a SilkRoad instance with default configuration.
+     * Useful for quick simulations or testing without specific parameters.
      */
     public SilkRoad() {
         stores = new ArrayList<Store>();
@@ -61,10 +123,12 @@ public class SilkRoad {
         visible = true;
         profit = 0;
         contest = new SilkRoadContest();
+        spiralPositions = new ArrayList<int[]>();
         
         spiralPath = new SpiralPath();
         spiralPath.changeColor("black");
         
+        // Inicializa la barra de progreso (fondo y parte verde)
         progressBackground = new Rectangle();
         progressBackground.changeColor("gray");
         progressBackground.changeSize(25, 700);
@@ -79,97 +143,63 @@ public class SilkRoad {
         
         Canvas.getCanvas();
     }
-    
-    /**
-     * Create the initial route with stores and robots.
-     * @param store positions X coordinates of the stores
-     * @param tengesTiendas initial money from each store
-     * @param posicionesRobots X coordinates of the robots
-     */
-    public void create(int[] posicionesTiendas, int[] tengesTiendas, int[] posicionesRobots) throws SilkRoadException {
-        if (posicionesTiendas == null || tengesTiendas == null || posicionesRobots == null) {
-            throw new SilkRoadException(SilkRoadException.INVALID_ARRAYS_EXCEPTION);
-        }
-        
-        if (posicionesTiendas.length != tengesTiendas.length) {
-            throw new SilkRoadException(SilkRoadException.ARRAY_SIZE_MISMATCH_EXCEPTION);
-        }
-        
-        if (posicionesTiendas.length == 0) {
-            throw new SilkRoadException(SilkRoadException.NO_STORES_EXCEPTION);
-        }
-        
-        for (int tenges : tengesTiendas) {
-            if (tenges < 0) {
-                throw new SilkRoadException(SilkRoadException.INVALID_TENGES_EXCEPTION);
-            }
-        }
-        stores.clear();
-        robots.clear();
-        profit = 0;
-        storeColorIndex = 0;
-        robotColorIndex = 0;
-        
-        maxPossibleProfit = 0;
-        for (int i = 0; i < tengesTiendas.length; i++) {
-            maxPossibleProfit += tengesTiendas[i];
-        }
-        
-        // Crear tiendas en posiciones calculadas
-        int centerX = 400;
-        int centerY = 300;
-        int spacing = 80;
-        
-        int[][] storePositions = new int[posicionesTiendas.length][2];
-        
-        for (int i = 0; i < posicionesTiendas.length; i++) {
-            // Calcular posición en espiral simple 
-            double angle = (2 * Math.PI * i) / posicionesTiendas.length;
-            int radius = 150;
-            int x = centerX + (int)(radius * Math.cos(angle));
-            int y = centerY + (int)(radius * Math.sin(angle));
-            
-            storePositions[i][0] = x;
-            storePositions[i][1] = y;
-            
-            // Obtener color único
-            String color = storeColors[storeColorIndex % storeColors.length];
-            storeColorIndex++;
-            
-            Store newStore = new Store(i, tengesTiendas[i], x, y, color);
-            stores.add(newStore);
-        }
-        
-        spiralPath.changeColor("black");
-        spiralPath.drawPath(storePositions);
-        spiralPath.makeVisible();
-        
-        // Crear robots en línea superior
-        for (int j = 0; j < posicionesRobots.length; j++) {
-            int xPos = 150 + (j * 100);
-            int yPos = 50;
-            
-            String color = robotColors[robotColorIndex % robotColors.length];
-            robotColorIndex++;
-            
-            Robot newRobot = new Robot(xPos, yPos, 25, color);
-            robots.add(newRobot);
-        }
-        
-        updateProgressBar();
-        progressBackground.makeVisible();
-        progressBar.makeVisible();
-        
-    }
 
     /**
-     * Adds a new store at given coordinates (x, y) with certain amount of tenges.
+     * Generates square spiral coordinates.
+     * The spiral expands from a central point and alternates
+     * direction in the order: right → down → left → up.
+     * 
+     * @param centerX  x coordinate of the spiral center
+     * @param centerY  y coordinate of the spiral center
+     * @param numPoints number of positions to generate
+     * @param spacing distance between each spiral step
+     * @return list of coordinate pairs representing the spiral path
+     */
+    private ArrayList<int[]> generateSquareSpiralPositions(int centerX, int centerY, int numPoints, int spacing) {
+        ArrayList<int[]> positions = new ArrayList<int[]>();
+        
+        int x = centerX;
+        int y = centerY;
+        positions.add(new int[]{x, y}); // punto inicial
+        
+        int steps = 1;
+        int direction = 0; // 0=derecha, 1=abajo, 2=izquierda, 3=arriba
+        int pointsGenerated = 1;
+        
+        // Genera los puntos siguiendo la lógica de espiral cuadrada
+        while (pointsGenerated < numPoints) {
+            for (int i = 0; i < 2 && pointsGenerated < numPoints; i++) {
+                for (int j = 0; j < steps && pointsGenerated < numPoints; j++) {
+                    switch (direction) {
+                        case 0: x += spacing; break; // Derecha
+                        case 1: y += spacing; break; // Abajo
+                        case 2: x -= spacing; break; // Izquierda
+                        case 3: y -= spacing; break; // Arriba
+                    }
+                    positions.add(new int[]{x, y});
+                    pointsGenerated++;
+                }
+                direction = (direction + 1) % 4; // cambia de dirección
+            }
+            steps++; // incrementa los pasos tras dos direcciones
+        }
+        
+        return positions;
+    }
+    
+    /**
+     * Adds a new store at a specific x position with a given amount of tenges.
+     * 
+     * @param x horizontal location for the store
+     * @param tenges initial money of the store
+     * @throws SilkRoadException if tenges value is invalid (negative)
      */
     public void placeStore(int x, int tenges) throws SilkRoadException {
-         if (tenges < 0) {
+        if (tenges < 0) {
             throw new SilkRoadException(SilkRoadException.INVALID_TENGES_EXCEPTION);
         }
         
+        // Asigna color secuencial a la tienda
         String color = storeColors[storeColorIndex % storeColors.length];
         storeColorIndex++;
         
@@ -177,42 +207,37 @@ public class SilkRoad {
         stores.add(newStore);
     }
 
-    //New methood
     /**
-     * Create a store of the specified type at the given location.
-     * Valid types: "autonomous", "discount", "fighter"
-     * @param type type of store
-     * @param location position in x
-     * @param tenges initial amount
+     * Adds a new store by type and location.
+     * Creates an instance of Store or its subclasses based on the type.
+     * 
+     * @param type store type ("discount", "fighter", "autonomous", or others)
+     * @param location x coordinate for the store
+     * @param tenges initial amount of money
      */
-    public void placeStore(String type, int location, int tenges) throws SilkRoadException {
-        if (tenges < 0) {
-            throw new SilkRoadException(SilkRoadException.INVALID_TENGES_EXCEPTION);
-        }
+    public void placeStore(String type, int location, int tenges) {
         String color = storeColors[storeColorIndex % storeColors.length];
         storeColorIndex++;
     
-        // Coordenadas básicas (puedes ajustar según tu sistema visual)
         int x = location;
-        int y = 100 + (stores.size() * 60);
+        int y = 100 + (stores.size() * 60); // Distribuye tiendas verticalmente
     
         Store newStore;
     
         switch (type.toLowerCase()) {
-        case "discount":
-            newStore = new Discount(stores.size(), tenges, x, y, color);
-            break;
-        case "fighter":
-            newStore = new Fighter(stores.size(), tenges, x, y, color);
-            break;
-        case "autonomous":
-            newStore = new Autonomous(stores.size(), tenges, x, y, color);
-            break;
-        default:
-            // Si no coincide con ninguno, se crea una tienda normal
-            newStore = new Store(stores.size(), tenges, x, y, color);
-            System.out.println("Tipo no reconocido, creando Store normal por defecto.");
-            break;
+            case "discount":
+                newStore = new Discount(stores.size(), tenges, x, y, color);
+                break;
+            case "fighter":
+                newStore = new Fighter(stores.size(), tenges, x, y, color);
+                break;
+            case "autonomous":
+                newStore = new Autonomous(stores.size(), tenges, x, y, color);
+                break;
+            default:
+                newStore = new Store(stores.size(), tenges, x, y, color);
+                System.out.println("Tipo no reconocido, creando Store normal por defecto.");
+                break;
         }
 
         stores.add(newStore);
@@ -220,21 +245,22 @@ public class SilkRoad {
 
     /**
      * Removes a store by its index.
-     * @index a current position
+     * 
+     * @param index position in the list of stores
+     * @throws SilkRoadException if index is invalid
      */
     public void removeStore(int index) throws SilkRoadException {
         if (index < 0 || index >= stores.size()) {
             throw new SilkRoadException(SilkRoadException.INVALID_INDEX_EXCEPTION);
         }
-        if (index >= 0 && index < stores.size()) {
-            stores.get(index).delete();
-            stores.remove(index);
-        }
+        stores.get(index).delete(); // Elimina la representación visual
+        stores.remove(index);
     }
 
     /**
-     * Adds a new robot at given coordinates (x, y).
-     * @param x X position
+     * Adds a robot at a specific x position with automatic color and fixed size.
+     * 
+     * @param x horizontal location for the robot
      */
     public void placeRobot(int x) {
         String color = robotColors[robotColorIndex % robotColors.length];
@@ -244,34 +270,30 @@ public class SilkRoad {
         robots.add(newRobot);
     }
 
-    //New methood
     /**
-     * Crea un robot del tipo especificado y lo coloca en la ubicación dada.
+     * Adds a robot of a given type at a specific location.
      * 
-     * @param type Tipo de robot: "normal", "neverback" o "tender".
-     * @param location Posición horizontal donde se ubicará el robot.
+     * @param type robot type ("neverback", "tender", or others)
+     * @param location x coordinate of the robot
      */
     public void placeRobot(String type, int location) {
         String color = robotColors[robotColorIndex % robotColors.length];
         robotColorIndex++;
     
         int x = location;
-        int y = 100; // Altura estándar para los robots
+        int y = 100;
         int size = 25;
     
         Robot newRobot;
     
-        // Seleccionar tipo de robot
         switch (type.toLowerCase()) {
             case "neverback":
                 newRobot = new NeverBack(x, y, size, color);
                 break;
-    
             case "tender":
                 newRobot = new Tender(x, y, size, color);
                 break;
-    
-            default: // "normal" u otro texto crea un robot estándar
+            default:
                 newRobot = new Robot(x, y, size, color);
                 System.out.println("Tipo no reconocido, creando Robot normal por defecto.");
                 break;
@@ -279,298 +301,352 @@ public class SilkRoad {
     
         robots.add(newRobot);
     }
-
     
     /**
      * Removes a robot by its index.
-     * @index a current position
+     * 
+     * @param index position of the robot in the list
+     * @throws SilkRoadException if index is invalid
      */
     public void removeRobot(int index) throws SilkRoadException {
         if (index < 0 || index >= robots.size()) {
             throw new SilkRoadException(SilkRoadException.INVALID_INDEX_EXCEPTION);
         }
-        
-        if (index >= 0 && index < robots.size()) {
-            robots.get(index).delete();
-            robots.remove(index);
-        }
+        robots.get(index).delete(); // Elimina visualmente el robot
+        robots.remove(index);
     }
-
+    
     /**
-     * Moves a robot to new coordinates (x, y).
+     * Moves a specific robot to a new (x, y) position.
+     * 
+     * @param index index of the robot to move
+     * @param newX new x coordinate
+     * @param newY new y coordinate
+     * @throws SilkRoadException if the index is invalid
      */
     public void moveRobot(int index, int newX, int newY) throws SilkRoadException {
         if (index < 0 || index >= robots.size()) {
             throw new SilkRoadException(SilkRoadException.INVALID_INDEX_EXCEPTION);
         }
-        
-        if (index >= 0 && index < robots.size()) {
-            robots.get(index).moveTo(newX, newY);
-        }
+        robots.get(index).moveTo(newX, newY);
     }
     
     /**
-     * Moves a robot to new coordinates (x, y).
-     * @param index current position
-     * @param newX a new position in x.
-     * @param newy a new position in y.
+     * Moves all robots along the spiral path toward the most profitable store.
+     * Depending on the type of store and robot, the collection logic may vary:
+     * - Discount: collects 75% of the normal profit.
+     * - Fighter: only robots with more money can collect.
+     * - Tender: collects half of what it would normally take.
+     * 
+     * @throws SilkRoadException if there are no stores or robots available
      */
-    public void moveRobots() throws SilkRoadException{
+    public void moveRobots() throws SilkRoadException {
         if (stores.isEmpty()) {
             throw new SilkRoadException(SilkRoadException.NO_STORES_EXCEPTION);
         }
         if (robots.isEmpty()) {
             throw new SilkRoadException(SilkRoadException.NO_ROBOTS_EXCEPTION);
         }
-        
-        if (stores.isEmpty() || robots.isEmpty()) return;
     
-        // Determinar la tienda más rentable
+        // Encuentra la tienda con más dinero disponible (más rentable)
         Store mejorTienda = stores.get(0);
-        for (Store s : stores) {
-            if (s.getTenges() > mejorTienda.getTenges()) {
-                mejorTienda = s;
+        int mejorIndice = 0;
+        for (int i = 0; i < stores.size(); i++) {
+            if (stores.get(i).getTenges() > mejorTienda.getTenges()) {
+                mejorTienda = stores.get(i);
+                mejorIndice = i;
             }
         }
     
         int mayorRecolectado = 0;
         Robot robotMasExitoso = null;
-    
-        // Simulación de dinero individual de cada robot 
         Map<Robot, Integer> dineroRobots = new HashMap<>();
     
+        // Itera sobre cada robot y simula su movimiento y recolección
         for (Robot r : robots) {
-            // valor inicial del robot si no tiene aún
             dineroRobots.putIfAbsent(r, 0);
             int dineroRobot = dineroRobots.get(r);
-            r.moveTo(mejorTienda.getScreenX(), mejorTienda.getScreenY());
-            int recolectado = 0;
-    
             
-            if (mejorTienda instanceof Discount) {
-                // Tienda discount entrega 75 %
-                recolectado = (int)(mejorTienda.collect() * 0.75);
+            // Mueve el robot siguiendo la espiral hasta la tienda más rentable
+            if (mejorIndice < spiralPositions.size()) {
+                for (int i = 0; i <= mejorIndice && i < spiralPositions.size(); i++) {
+                    int[] pos = spiralPositions.get(i);
+                    r.moveTo(pos[0], pos[1]);
+                }
+            }
+            
+            int recolectado = 0; // dinero obtenido por el robot en esta ronda
     
+            // Aplica reglas especiales según el tipo de tienda
+            if (mejorTienda instanceof Discount) {
+                recolectado = (int)(mejorTienda.collect() * 0.75);
             } else if (mejorTienda instanceof Fighter) {
-                //solosi el robot tiene más dinero que la tienda
+                // Solo recoge si tiene más dinero que la tienda
                 if (dineroRobot > mejorTienda.getTenges()) {
                     recolectado = mejorTienda.collect();
                 } else {
-                    System.out.println("Robot no tiene más dinero que la Fighter, no puede recolectar.");
+                    System.out.println("Robot no tiene más dinero que la Fighter.");
                     recolectado = 0;
                 }
-    
             } else {
-                // Tienda normal
                 recolectado = mejorTienda.collect();
             }
     
-            // Ajuste si el robot es Tender 
+            // Si es un robot Tender, solo obtiene la mitad
             if (r instanceof Tender) {
                 recolectado /= 2;
             }
 
+            // Actualiza el dinero total del robot y la ganancia global
             dineroRobot += recolectado;
             dineroRobots.put(r, dineroRobot);
             profit += recolectado;
     
-            // Identificar robot más exitoso
+            // Registra cuál robot fue el más exitoso
             if (recolectado > mayorRecolectado) {
                 mayorRecolectado = recolectado;
                 robotMasExitoso = r;
             }
         }
     
+        // Actualiza la barra de progreso según la ganancia
         updateProgressBar();
         
-        // hacemos que el mejor parpadee
+        // Hace parpadear al robot que más recolectó
         if (robotMasExitoso != null) {
             robotMasExitoso.blink();
         }
     }
 
     /**
-     * Resupplies all stores to their initial amount of tenges.
+     * Resupplies all stores, restoring their tenges.
+     * Used to simulate the start of a new day or restock event.
      */
     public void resupplyStores() {
-        for (int i = 0; i < stores.size(); i++) {
-            stores.get(i).resupply();
+        // Reabastece todas las tiendas a su valor inicial
+        for (Store s : stores) {
+            s.resupply();
         }
     }
 
     /**
-     * Returns all robots to their initial position.
+     * Returns all robots to their initial positions.
+     * Used after a day ends or to restart a simulation.
      */
     public void returnRobots() {
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).reset();
+        if (!spiralPositions.isEmpty()) {
+            int[] startPos = spiralPositions.get(0);
+            for (int i = 0; i < robots.size(); i++) {
+                // Reposiciona los robots en línea frente al punto de inicio
+                int xPos = startPos[0] + (i * 30) - ((robots.size() - 1) * 15);
+                int yPos = startPos[1] - 50;
+                robots.get(i).moveTo(xPos, yPos);
+            }
         }
     }
 
     /**
-     * Reboots the SilkRoad simulator (resets stores and robots).
+     * Reboots the SilkRoad simulation.
+     * Resets all stores, returns robots, and resets the total profit.
      */
     public void reboot() {
-        for (int i = 0; i < stores.size(); i++) {
-            stores.get(i).reset();
+        for (Store s : stores) {
+            s.reset(); // Restaura el estado original de cada tienda
         }
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).reset();
-        }
-        profit = 0;
-        
+        returnRobots(); // Devuelve los robots a su posición inicial
+        profit = 0; // Reinicia la ganancia total
         updateProgressBar();
     }
 
     /**
-     * Calculates and returns the total profit (sum of diary collected money from all stores).
+     * Returns the total accumulated profit and resets it to zero.
+     * 
+     * @return total profit value before reset
      */
     public int profit() {
         int total = profit;
-        profit = 0;  // Reinicia después de devolver las ganancias
+        profit = 0;
         return total;
     }
 
-
     /**
-     * Returns current coordinates of all stores.
+     * Returns a 2D array with the current screen positions of all stores.
+     * Each row corresponds to a store: [x, y].
+     * 
+     * @return positions of all stores
      */
     public int[][] stores() {
         int[][] positions = new int[stores.size()][2];
+        // Extrae las coordenadas gráficas de cada tienda
         for (int i = 0; i < stores.size(); i++) {
             positions[i][0] = stores.get(i).getScreenX();
             positions[i][1] = stores.get(i).getScreenY();
         }
         return positions;
-     }
+    }
     
     /**
-     * Returns an array with the number of times each store has been vacated.
+     * Returns a 2D array with the number of times each store has been emptied.
+     * Each row corresponds to [storeIndex, emptiedCount].
+     * 
+     * @return data of emptied stores
      */
     public int[][] emptiedStores() {
-        int[][] datos = new int[stores.size()][2]; // [posición, veces vacía]
+        int[][] datos = new int[stores.size()][2];
         for (int i = 0; i < stores.size(); i++) {
-            datos[i][0] = i;                       // posición ficticia
-            datos[i][1] = stores.get(i).getEmptiedCount();
+            datos[i][0] = i; // índice de la tienda
+            datos[i][1] = stores.get(i).getEmptiedCount(); // veces desocupada
         }
         return datos;
     }
 
     /**
-     * Returns current coordinates of all robots.
+     * Returns a 2D array with the current positions of all robots.
+     * Each row corresponds to [x, y].
+     * 
+     * @return positions of all robots
      */
     public int[][] robots() {
         int[][] positions = new int[robots.size()][2];
         for (int i = 0; i < robots.size(); i++) {
-            positions[i][0] = 0;
-            positions[i][1] = 0;
+            positions[i][0] = robots.get(i).getX();
+            positions[i][1] = robots.get(i).getY();
         }
         return positions;
     }
     
     /**
-     *Returns an array with the profits per movement of each robot.
+     * Returns a 2D array simulating the profit earned by each robot in its last move.
+     * Each row corresponds to [robotIndex, profitValue].
+     * (In this implementation, profits are randomized for demonstration purposes.)
+     * 
+     * @return profit per move per robot
      */
     public int[][] profitPerMove() {
-        int[][] ganancias = new int[robots.size()][2]; // [robot, ganancia]
+        int[][] ganancias = new int[robots.size()][2];
         for (int i = 0; i < robots.size(); i++) {
-            ganancias[i][0] = i;                       // número del robot
-            ganancias[i][1] = (int)(Math.random() * 100); // ganancia simulada
+            ganancias[i][0] = i;
+            ganancias[i][1] = (int)(Math.random() * 100); // valor simulado
         }
         return ganancias;
     }
 
     /**
-     * Makes the simulator visible (draws all elements again).
+     * Makes the entire SilkRoad simulation visible.
+     * Displays all graphical components including path, stores, robots, and progress bar.
      */
     public void makeVisible() {
         this.visible = true;
         Canvas.getCanvas().setVisible(true);
-        
         spiralPath.makeVisible();
-        
         progressBackground.makeVisible();
         progressBar.makeVisible();
         
-        for (int i = 0; i < stores.size(); i++) {
-            stores.get(i).makeVisible();
+        // Muestra todas las tiendas
+        for (Store s : stores) {
+            s.makeVisible();
         }
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).makeVisible();
+        // Muestra todos los robots
+        for (Robot r : robots) {
+            r.makeVisible();
         }
     }
 
     /**
-     * Makes the simulator invisible (erases all elements).
+     * Makes the SilkRoad simulation invisible.
+     * Hides all elements visually while keeping logical data in memory.
      */
     public void makeInvisible() {
         this.visible = false;
         spiralPath.makeInvisible();
-        
         progressBackground.makeInvisible();
         progressBar.makeInvisible();
         
-        for (int i = 0; i < stores.size(); i++) {
-            stores.get(i).delete();
+        // Elimina representación visual (no los objetos en memoria)
+        for (Store s : stores) {
+            s.delete();
         }
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).delete();
+        for (Robot r : robots) {
+            r.delete();
         }
     }
-
+    /**
+     * Updates the progress bar according to the current profit.
+     * The width and color of the bar represent the percentage of maximum profit achieved.
+     * 
+     * Color changes dynamically based on percentage:
+     * - Yellow: < 50%
+     * - Cyan: between 50% and 75%
+     * - Blue: between 75% and 100%
+     * - Green: full profit achieved
+     */
     private void updateProgressBar() {
         if (maxPossibleProfit == 0) {
-            maxPossibleProfit = 1; // Evitar división por cero
+            maxPossibleProfit = 1; // evita división por cero
         }
         
-        // Calcular ancho de la barra (máximo 700 píxeles)
+        // Calcula el ancho de la barra proporcional a la ganancia actual
         int barWidth = (int)((double)profit / maxPossibleProfit * 700);
-        barWidth = Math.min(barWidth, 700); // No exceder el ancho máximo
-        
+        barWidth = Math.min(barWidth, 700); // límite máximo
         progressBar.changeSize(25, barWidth);
         
-        // Cambiar color según el progreso
         double percentage = (double)profit / maxPossibleProfit;
         
+        // Cambia el color según el progreso actual
         if (percentage >= 1.0) {
-            progressBar.changeColor("green");  // 100% = verde
+            progressBar.changeColor("green");
         } else if (percentage >= 0.75) {
-            progressBar.changeColor("blue");    // 75-99% = azul
+            progressBar.changeColor("blue");
         } else if (percentage >= 0.50) {
-            progressBar.changeColor("cyan");    // 50-74% = cyan
+            progressBar.changeColor("cyan");
         } else {
-            progressBar.changeColor("yellow");   // 0-49% = amarillo
+            progressBar.changeColor("yellow");
         }
     }
     
     /**
-     * Finishes the simulator (removes everything).
+     * Finishes and cleans the SilkRoad simulation.
+     * Deletes all visual elements and resets all logical structures.
+     * This action represents the end of the simulator.
      */
     public void finish() {
+        // Limpia la ruta y oculta la barra de progreso
         spiralPath.clear();
-        
         progressBackground.makeInvisible();
         progressBar.makeInvisible();
         
-        for (int i = 0; i < stores.size(); i++) {
-            stores.get(i).delete();
+        // Elimina todas las tiendas y robots de la pantalla
+        for (Store s : stores) {
+            s.delete();
         }
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).delete();
+        for (Robot r : robots) {
+            r.delete();
         }
+        // Vacía las listas de datos
         stores.clear();
         robots.clear();
     }
-
     /**
-     * Checks if the simulator is in a valid state.
+     * Checks if the SilkRoad simulator is correctly initialized.
+     * Ensures that the lists of stores and robots exist (not null).
+     * 
+     * @return true if initialized correctly, false otherwise
      */
     public boolean ok() {
         return (stores != null && robots != null);
     }
     
+    /**
+     * Executes the contest simulation using the given utility values.
+     * Delegates the process to the SilkRoadContest class.
+     * 
+     * @param utilidades array of utility values used for the simulation
+     */
     public void ejecutarSimulacion(int[] utilidades) {
-        contest.simulate(utilidades); 
+        // Llama al método simulate() de la clase SilkRoadContest
+        // para ejecutar la simulación basada en los datos de utilidades
+        contest.simulate(utilidades);
     }
 }
+
 
