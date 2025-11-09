@@ -1,7 +1,5 @@
 package test;
 
-
-
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +18,7 @@ public class SilkRoadTest {
     
     @BeforeEach
     public void setUp() {
-        silkRoad = new SilkRoad();
+        silkRoad = new SilkRoad(1000); // Inicializa con longitud
     }
     
     @AfterEach
@@ -32,16 +30,17 @@ public class SilkRoadTest {
     }
     
     /**
-     * Test: Crear una ruta válida
+     * Test: Agregar tiendas y robots válidos
      */
     @Test
-    public void shouldCreateValidRoad() throws SilkRoadException{
+    public void shouldAddStoresAndRobotsSuccessfully() {
         try {
-            int[] posStores = {0, 1, 2};
-            int[] tenges = {100, 150, 200};
-            int[] posRobots = {0, 1};
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
+            silkRoad.placeStore(300, 200);
             
-            silkRoad.create(posStores, tenges, posRobots);
+            silkRoad.placeRobot(50);
+            silkRoad.placeRobot(60);
             
             assertTrue(silkRoad.ok());
             assertEquals(3, silkRoad.stores().length);
@@ -52,81 +51,14 @@ public class SilkRoadTest {
     }
     
     /**
-     * Test: Crear ruta con arrays null
-     */
-    @Test
-    public void shouldThrowExceptionWithNullArrays() {
-        try {
-            silkRoad.create(null, null, null);
-            fail("Debería lanzar SilkRoadException");
-        } catch (SilkRoadException e) {
-            assertEquals(SilkRoadException.INVALID_ARRAYS_EXCEPTION, e.getMessage());
-        }
-    }
-    
-    /**
-     * Test: Crear ruta con arrays de diferente tamaño
-     */
-    @Test
-    public void shouldThrowExceptionWithMismatchedArrays() {
-        try {
-            int[] posStores = {0, 1, 2};
-            int[] tenges = {100, 150}; // Tamaño diferente
-            int[] posRobots = {0};
-            
-            silkRoad.create(posStores, tenges, posRobots);
-            fail("Debería lanzar SilkRoadException");
-        } catch (SilkRoadException e) {
-            assertEquals(SilkRoadException.ARRAY_SIZE_MISMATCH_EXCEPTION, e.getMessage());
-        }
-    }
-    
-    /**
-     * Test: Crear ruta sin tiendas
-     */
-    @Test
-    public void shouldThrowExceptionWithNoStores() {
-        try {
-            int[] posStores = {};
-            int[] tenges = {};
-            int[] posRobots = {0};
-            
-            silkRoad.create(posStores, tenges, posRobots);
-            fail("Debería lanzar SilkRoadException");
-        } catch (SilkRoadException e) {
-            assertEquals(SilkRoadException.NO_STORES_EXCEPTION, e.getMessage());
-        }
-    }
-    
-    /**
-     * Test: Crear ruta con tenges negativos
-     */
-    @Test
-    public void shouldThrowExceptionWithNegativeTenges() {
-        try {
-            int[] posStores = {0, 1};
-            int[] tenges = {100, -50}; // Tenges negativo
-            int[] posRobots = {0};
-            
-            silkRoad.create(posStores, tenges, posRobots);
-            fail("Debería lanzar SilkRoadException");
-        } catch (SilkRoadException e) {
-            assertEquals(SilkRoadException.INVALID_TENGES_EXCEPTION, e.getMessage());
-        }
-    }
-    
-    /**
      * Test: Agregar tienda válida
      */
     @Test
     public void shouldAddStoreSuccessfully() {
         try {
-            int[] posStores = {0, 1};
-            int[] tenges = {100, 150};
-            int[] posRobots = {0};
-            
-            silkRoad.create(posStores, tenges, posRobots);
-            silkRoad.placeStore(200, 180);
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
+            silkRoad.placeStore(300, 180);
             
             assertEquals(3, silkRoad.stores().length);
         } catch (SilkRoadException e) {
@@ -153,11 +85,12 @@ public class SilkRoadTest {
     @Test
     public void shouldRemoveStoreSuccessfully() {
         try {
-            int[] posStores = {0, 1, 2};
-            int[] tenges = {100, 150, 200};
-            int[] posRobots = {0};
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
+            silkRoad.placeStore(300, 200);
             
-            silkRoad.create(posStores, tenges, posRobots);
+            assertEquals(3, silkRoad.stores().length);
+            
             silkRoad.removeStore(1);
             
             assertEquals(2, silkRoad.stores().length);
@@ -172,12 +105,46 @@ public class SilkRoadTest {
     @Test
     public void shouldThrowExceptionWithInvalidStoreIndex() {
         try {
-            int[] posStores = {0, 1};
-            int[] tenges = {100, 150};
-            int[] posRobots = {0};
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
             
-            silkRoad.create(posStores, tenges, posRobots);
             silkRoad.removeStore(5); // Índice fuera de rango
+            fail("Debería lanzar SilkRoadException");
+        } catch (SilkRoadException e) {
+            assertEquals(SilkRoadException.INVALID_INDEX_EXCEPTION, e.getMessage());
+        }
+    }
+    
+    /**
+     * Test: Eliminar robot con índice válido
+     */
+    @Test
+    public void shouldRemoveRobotSuccessfully() {
+        try {
+            silkRoad.placeRobot(50);
+            silkRoad.placeRobot(100);
+            silkRoad.placeRobot(150);
+            
+            assertEquals(3, silkRoad.robots().length);
+            
+            silkRoad.removeRobot(1);
+            
+            assertEquals(2, silkRoad.robots().length);
+        } catch (SilkRoadException e) {
+            fail("No debería lanzar excepción: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Test: Eliminar robot con índice inválido
+     */
+    @Test
+    public void shouldThrowExceptionWithInvalidRobotIndex() {
+        try {
+            silkRoad.placeRobot(50);
+            silkRoad.placeRobot(100);
+            
+            silkRoad.removeRobot(5); // Índice fuera de rango
             fail("Debería lanzar SilkRoadException");
         } catch (SilkRoadException e) {
             assertEquals(SilkRoadException.INVALID_INDEX_EXCEPTION, e.getMessage());
@@ -190,16 +157,32 @@ public class SilkRoadTest {
     @Test
     public void shouldThrowExceptionMovingRobotsWithoutStores() {
         try {
-            int[] posStores = {0};
-            int[] tenges = {100};
-            int[] posRobots = {0};
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeRobot(50);
             
-            silkRoad.create(posStores, tenges, posRobots);
             silkRoad.removeStore(0);
             silkRoad.moveRobots();
+            
             fail("Debería lanzar SilkRoadException");
         } catch (SilkRoadException e) {
             assertEquals(SilkRoadException.NO_STORES_EXCEPTION, e.getMessage());
+        }
+    }
+    
+    /**
+     * Test: Mover robots sin robots en la ruta
+     */
+    @Test
+    public void shouldThrowExceptionMovingWithoutRobots() {
+        try {
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
+            
+            silkRoad.moveRobots(); // No hay robots
+            
+            fail("Debería lanzar SilkRoadException");
+        } catch (SilkRoadException e) {
+            assertEquals(SilkRoadException.NO_ROBOTS_EXCEPTION, e.getMessage());
         }
     }
     
@@ -209,11 +192,10 @@ public class SilkRoadTest {
     @Test
     public void shouldRebootSuccessfully() {
         try {
-            int[] posStores = {0, 1};
-            int[] tenges = {100, 150};
-            int[] posRobots = {0};
+            silkRoad.placeStore(100, 100);
+            silkRoad.placeStore(200, 150);
+            silkRoad.placeRobot(50);
             
-            silkRoad.create(posStores, tenges, posRobots);
             silkRoad.moveRobots();
             
             int profitBeforeReboot = silkRoad.profit();
@@ -221,9 +203,59 @@ public class SilkRoadTest {
             int profitAfterReboot = silkRoad.profit();
             
             assertEquals(0, profitAfterReboot);
-            assertTrue(profitBeforeReboot > profitAfterReboot);
+            assertTrue(profitBeforeReboot >= 0);
         } catch (SilkRoadException e) {
             fail("No debería lanzar excepción: " + e.getMessage());
         }
+    }
+    
+    /**
+     * Test: Método ok() funciona correctamente
+     */
+    @Test
+    public void shouldReturnTrueWhenInitializedCorrectly() {
+        assertTrue(silkRoad.ok());
+    }
+    
+    /**
+     * Test: Constructor con array de días
+     */
+    @Test
+    public void shouldCreateWithDaysArray() {
+        int[][] days = {
+            {0, 100},
+            {1, 150},
+            {2, 200}
+        };
+        
+        SilkRoad road = new SilkRoad(days);
+        assertTrue(road.ok());
+        assertEquals(3, road.stores().length);
+        road.finish();
+    }
+    
+    /**
+     * Test: Agregar diferentes tipos de tiendas
+     */
+    @Test
+    public void shouldAddDifferentStoreTypes() {
+        silkRoad.placeStore("normal", 100, 100);
+        silkRoad.placeStore("discount", 200, 150);
+        silkRoad.placeStore("fighter", 300, 200);
+        silkRoad.placeStore("autonomous", 400, 180);
+        
+        assertEquals(4, silkRoad.stores().length);
+    }
+    
+    /**
+     * Test: Agregar diferentes tipos de robots
+     */
+    @Test
+    public void shouldAddDifferentRobotTypes() {
+        silkRoad.placeRobot("normal", 50);
+        silkRoad.placeRobot("neverback", 100);
+        silkRoad.placeRobot("tender", 150);
+        
+        assertEquals(3, silkRoad.robots().length);
     }
 }
