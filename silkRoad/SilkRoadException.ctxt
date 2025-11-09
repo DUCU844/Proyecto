@@ -1,6 +1,7 @@
 #BlueJ class context
 comment0.target=SilkRoadException
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ SilkRoadException\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ The\ SilkRoadException\ class\ defines\ custom\ exceptions\ \r\n\ for\ handling\ specific\ error\ cases\ in\ the\ Silk\ Road\ simulator.\r\n\ \r\n\ Each\ type\ of\ error\ has\ its\ own\ message,\ defined\ as\ a\ constant.\r\n\ These\ exceptions\ are\ used\ to\ ensure\ valid\ data\ and\ safe\ operations\r\n\ when\ managing\ robots,\ stores,\ and\ arrays\ in\ the\ simulation.\r\n\ \r\n\ Example\ usage\:\r\n\ throw\ new\ SilkRoadException(SilkRoadException.INVALID_POSITION_EXCEPTION);\r\n\ \r\n\ @author\ Alejandra\ Beltr\u00E1n\ -\ Adrian\ Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=message
 comment1.target=SilkRoadException(java.lang.String)
+comment1.text=\r\n\ Creates\ a\ new\ SilkRoadException\ with\ a\ specific\ message.\r\n\ \r\n\ @param\ message\ the\ error\ message\ describing\ the\ cause\ of\ the\ exception\r\n
 numComments=2

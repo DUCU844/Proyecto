@@ -1,9 +1,10 @@
 #BlueJ class context
 comment0.target=Fighter
-comment0.text=\r\n\ Only\ robots\ with\ higher\ tenges\ can\ collect\ the\ tenges\ from\ this\ store.\r\n\ \r\n\ @author\ Beltr\u00E1n-Ducuara\r\n\ @version\ 2025-2\r\n
+comment0.text=\r\n\ The\ Fighter\ class\ represents\ a\ special\ type\ of\ store\r\n\ that\ only\ allows\ robots\ with\ more\ money\ than\ the\ store\ itself\r\n\ to\ collect\ its\ tenges\ (money).\r\n\ \r\n\ If\ the\ robot\ has\ less\ or\ equal\ money,\ it\ cannot\ take\ anything.\r\n\ This\ behavior\ simulates\ a\ "competitive"\ store\ that\ only\ yields\r\n\ to\ stronger\ robots.\r\n\ \r\n\ @author\ Alejandra\ Beltr\u00E1n\ -\ Adrian\ Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=position\ tenges\ x\ y\ color
 comment1.target=Fighter(int,\ int,\ int,\ int,\ java.lang.String)
+comment1.text=\r\n\ Creates\ a\ new\ Fighter\ store.\r\n\ This\ store\ always\ uses\ the\ color\ red\ for\ identification.\r\n\ \r\n\ @param\ position\ logical\ position\ of\ the\ store\ in\ the\ route\r\n\ @param\ tenges\ \ \ initial\ amount\ of\ money\ the\ store\ holds\r\n\ @param\ x\ \ \ \ \ \ \ \ X\ coordinate\ on\ the\ screen\r\n\ @param\ y\ \ \ \ \ \ \ \ Y\ coordinate\ on\ the\ screen\r\n\ @param\ color\ \ \ \ ignored\ parameter\ (the\ store\ is\ always\ red)\r\n
 comment2.params=robotMoney
 comment2.target=int\ collect(int)
-comment2.text=\r\n\ Solo\ entrega\ su\ dinero\ si\ el\ robot\ tiene\ m\u00E1s\ que\ la\ tienda.\r\n\ @param\ robotMoney\ dinero\ actual\ del\ robot\r\n\ @return\ dinero\ recolectado\ (0\ si\ no\ tiene\ derecho)\r\n
+comment2.text=\r\n\ Allows\ collection\ only\ if\ the\ robot\ has\ more\ money\ than\ the\ store.\r\n\ Otherwise,\ the\ robot\ cannot\ take\ anything.\r\n\ \r\n\ @param\ robotMoney\ current\ amount\ of\ money\ the\ robot\ has\r\n\ @return\ the\ collected\ money,\ or\ 0\ if\ the\ robot\ is\ not\ allowed\r\n
 numComments=3

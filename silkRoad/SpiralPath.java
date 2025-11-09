@@ -1,18 +1,26 @@
 package silkRoad;
 
-
 import java.util.ArrayList;
 import shapes.Rectangle;
 
 /**
- * Clase que dibuja el camino en forma de espiral cuadrada
- * Conecta visualmente las posiciones de las tiendas
+ * The SpiralPath class is responsible for drawing a square spiral path.
+ * It visually connects the store positions along the Silk Road.
+ * 
+ * This class uses rectangles to represent the line segments of the path.
+ * Each segment can be shown, hidden, or recolored depending on the simulator state.
+ * 
+ * @author Alejandra Beltrán - Adrian Ducuara
+ * @version 2025-2
  */
 public class SpiralPath {
     private ArrayList<Rectangle> pathSegments;
     private boolean visible;
     private String color;
     
+    /**
+     * Creates a new SpiralPath with default color black and hidden by default.
+     */
     public SpiralPath() {
         pathSegments = new ArrayList<Rectangle>();
         visible = false;
@@ -20,7 +28,8 @@ public class SpiralPath {
     }
     
     /**
-     * Dibuja una línea horizontal
+     * Draws a horizontal line between two X coordinates at a given Y position.
+     * Used to connect stores in the same horizontal level.
      */
     private void drawHorizontalLine(int x1, int x2, int y) {
         Rectangle line = new Rectangle();
@@ -29,7 +38,7 @@ public class SpiralPath {
         int width = Math.abs(x2 - x1);
         int startX = Math.min(x1, x2);
         
-        line.changeSize(5, width); // Altura 3px, ancho = distancia
+        line.changeSize(5, width); // Altura 5px, ancho = distancia
         line.moveHorizontal(startX - 70);
         line.moveVertical(y - 15);
         
@@ -41,7 +50,8 @@ public class SpiralPath {
     }
     
     /**
-     * Dibuja una línea vertical
+     * Draws a vertical line between two Y coordinates at a given X position.
+     * Used to connect stores in the same vertical column.
      */
     private void drawVerticalLine(int x, int y1, int y2) {
         Rectangle line = new Rectangle();
@@ -62,7 +72,8 @@ public class SpiralPath {
     }
     
     /**
-     * Conecta dos puntos con una línea
+     * Connects two points with a straight line.
+     * If points are not aligned, it draws an 'L' shape combining horizontal and vertical lines.
      */
     public void connectPoints(int x1, int y1, int x2, int y2) {
         if (x1 == x2) {
@@ -72,18 +83,20 @@ public class SpiralPath {
             // Línea horizontal
             drawHorizontalLine(x1, x2, y1);
         } else {
-            // Línea diagonal: dibujamos en L (horizontal + vertical)
+            // Línea diagonal simulada como forma de L
             drawHorizontalLine(x1, x2, y1);
             drawVerticalLine(x2, y1, y2);
         }
     }
     
     /**
-     * Dibuja un camino espiral cuadrado
-     * @param centerX centro X de la espiral
-     * @param centerY centro Y de la espiral
-     * @param numPoints número de puntos en la espiral
-     * @param spacing espaciado entre puntos
+     * Draws a square spiral path starting from the given center point.
+     * The spiral grows in steps in four directions: right, down, left, and up.
+     * 
+     * @param centerX the X coordinate of the spiral center
+     * @param centerY the Y coordinate of the spiral center
+     * @param numPoints number of points to connect
+     * @param spacing distance between points
      */
     public void drawSquareSpiral(int centerX, int centerY, int numPoints, int spacing) {
         clear();
@@ -91,15 +104,17 @@ public class SpiralPath {
         int x = centerX;
         int y = centerY;
         int steps = 1;
-        int direction = 0; // 0=derecha, 1=abajo, 2=izquierda, 3=arriba
+        int direction = 0; // 0=right, 1=down, 2=left, 3=up
         int pointsDrawn = 0;
         
         while (pointsDrawn < numPoints - 1) {
-            for (int i = 0; i < 2; i++) { // Dos direcciones por cada incremento de steps
+            // Two directions per step increase
+            for (int i = 0; i < 2; i++) { 
                 for (int j = 0; j < steps && pointsDrawn < numPoints - 1; j++) {
                     int nextX = x;
                     int nextY = y;
                     
+                    // Cambia dirección según el valor actual
                     switch (direction) {
                         case 0: nextX += spacing; break; // Derecha
                         case 1: nextY += spacing; break; // Abajo
@@ -113,15 +128,15 @@ public class SpiralPath {
                     y = nextY;
                     pointsDrawn++;
                 }
-                
-                direction = (direction + 1) % 4;
+                direction = (direction + 1) % 4; // Rota la dirección
             }
             steps++;
         }
     }
     
     /**
-     * Dibuja camino conectando puntos específicos en orden
+     * Draws a path connecting specific points in order.
+     * @param points array of coordinates {x, y}
      */
     public void drawPath(int[][] points) {
         clear();
@@ -133,7 +148,8 @@ public class SpiralPath {
     }
     
     /**
-     * Cambia el color del camino
+     * Changes the color of all path segments.
+     * @param newColor the new color for the path
      */
     public void changeColor(String newColor) {
         this.color = newColor;
@@ -143,7 +159,7 @@ public class SpiralPath {
     }
     
     /**
-     * Hace visible el camino
+     * Makes all the path segments visible.
      */
     public void makeVisible() {
         visible = true;
@@ -153,7 +169,7 @@ public class SpiralPath {
     }
     
     /**
-     * Hace invisible el camino
+     * Hides all the path segments.
      */
     public void makeInvisible() {
         visible = false;
@@ -163,7 +179,8 @@ public class SpiralPath {
     }
     
     /**
-     * Limpia todos los segmentos del camino
+     * Clears all path segments from the screen and list.
+     * Used to reset the spiral or path before redrawing.
      */
     public void clear() {
         for (Rectangle segment : pathSegments) {

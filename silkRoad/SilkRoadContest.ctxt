@@ -1,11 +1,12 @@
 #BlueJ class context
 comment0.target=SilkRoadContest
+comment0.text=\r\n\ The\ SilkRoadContest\ class\ simulates\ and\ solves\ the\ profit\ calculation\ problem\r\n\ from\ the\ Silk\ Road\ contest.\ \r\n\ It\ provides\ two\ main\ operations\:\r\n\ -\ solve()\:\ calculates\ the\ maximum\ total\ profit.\r\n\ -\ simulate()\:\ shows\ a\ detailed\ simulation\ of\ the\ process.\r\n\ \r\n\ This\ class\ is\ designed\ to\ process\ a\ list\ of\ daily\ utilities\ (profits)\r\n\ and\ determine\ the\ best\ total\ value.\r\n\ \r\n\ @author\ Alejandra\ Beltr\u00E1n\ -\ Adrian\ Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=
 comment1.target=SilkRoadContest()
 comment2.params=utilidades
 comment2.target=int\ solve(int[])
-comment2.text=\r\n\ Calcula\ la\ m\u00E1xima\ utilidad\ diaria.\r\n\ Cada\ posici\u00F3n\ del\ arreglo\ representa\ la\ utilidad\ de\ un\ d\u00EDa.\r\n\ No\ se\ usan\ valores\ negativos.\r\n\ \r\n\ @param\ utilidades\ arreglo\ con\ las\ utilidades\ de\ cada\ d\u00EDa.\r\n\ @return\ la\ suma\ m\u00E1xima\ de\ utilidades\ consecutivas.\r\n
+comment2.text=\r\n\ Calculates\ the\ maximum\ daily\ profit.\r\n\ Each\ position\ in\ the\ array\ represents\ the\ profit\ of\ one\ day.\r\n\ Negative\ values\ are\ not\ considered.\r\n\ \r\n\ @param\ utilidades\ an\ array\ containing\ daily\ profits\r\n\ @return\ the\ maximum\ total\ profit\ obtained\ by\ summing\ consecutive\ days\r\n
 comment3.params=utilidades
 comment3.target=void\ simulate(int[])
-comment3.text=\r\n\ Simula\ el\ c\u00E1lculo\ de\ la\ utilidad.\r\n\ Muestra\ los\ valores\ y\ el\ resultado\ final.\r\n
+comment3.text=\r\n\ Simulates\ the\ profit\ calculation\ process.\r\n\ It\ prints\ the\ number\ of\ days,\ daily\ profits,\ and\ the\ final\ maximum\ result.\r\n\ \r\n\ @param\ utilidades\ an\ array\ containing\ daily\ profits\r\n
 numComments=4

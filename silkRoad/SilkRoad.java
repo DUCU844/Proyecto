@@ -19,10 +19,8 @@ import shapes.Rectangle;
  * - Collect profits and display progress.
  * - Simulate contests and calculate daily maximum profit.
  * 
- * @author 
- *  Beltrán-Ducuara
- * @version 1.0
- * @date 2025-2
+ * @author Alejandra Beltrán - Adrian Ducuara
+ * @version 2025-2
  */
 public class SilkRoad {
     

@@ -1,8 +1,10 @@
 #BlueJ class context
 comment0.target=NeverBack
-comment0.text=\r\n\ This\ robot\ never\ turns\ back\r\n\ \r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @version\ 2025-2\r\n
+comment0.text=\r\n\ The\ NeverBack\ class\ represents\ a\ special\ type\ of\ robot\r\n\ that\ never\ moves\ backward\ (upward\ on\ the\ screen).\r\n\ \r\n\ It\ extends\ {@link\ Robot}\ and\ overrides\ the\ moveTo()\ method\ \r\n\ to\ restrict\ any\ backward\ movement.\r\n\ \r\n\ If\ a\ move\ command\ tries\ to\ take\ the\ robot\ back\ (to\ a\ smaller\ Y\ value),\r\n\ the\ robot\ ignores\ it\ and\ displays\ a\ warning\ message.\r\n\ \r\n\ @author\ Alejandra\ Beltr\u00E1n\ -\ Adrian\ Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=x\ y\ size\ color
 comment1.target=NeverBack(int,\ int,\ int,\ java.lang.String)
+comment1.text=\r\n\ Creates\ a\ new\ NeverBack\ robot.\r\n\ This\ robot\ always\ uses\ the\ color\ magenta\ for\ identification.\r\n\ \r\n\ @param\ x\ \ \ \ \ \ initial\ X\ coordinate\r\n\ @param\ y\ \ \ \ \ \ initial\ Y\ coordinate\r\n\ @param\ size\ \ \ diameter\ of\ the\ robot\r\n\ @param\ color\ \ ignored\ parameter\ (always\ magenta)\r\n
 comment2.params=newX\ newY
 comment2.target=void\ moveTo(int,\ int)
+comment2.text=\r\n\ Moves\ the\ robot\ to\ a\ new\ position\ only\ if\ it\ is\ not\ moving\ backward.\r\n\ If\ the\ new\ Y\ position\ is\ smaller\ than\ the\ current\ one,\r\n\ the\ robot\ will\ not\ move\ and\ a\ warning\ will\ be\ printed.\r\n\ \r\n\ @param\ newX\ new\ X\ coordinate\r\n\ @param\ newY\ new\ Y\ coordinate\r\n
 numComments=3

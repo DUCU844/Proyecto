@@ -1,8 +1,10 @@
 #BlueJ class context
 comment0.target=Discount
-comment0.text=\r\n\ This\ is\ a\ Store\ who\ delivers\ only\ 75%\ of\ its\ tenges\r\n\ \r\n\ @author\ Beltr\u00E1n\ -\ Ducuara\r\n\ @2025-2\r\n
+comment0.text=\r\n\ The\ Discount\ class\ represents\ a\ special\ type\ of\ store\r\n\ that\ only\ delivers\ 75%\ of\ its\ total\ money\ when\ a\ robot\ collects\ from\ it.\r\n\ \r\n\ This\ class\ extends\ {@link\ Store}\ and\ modifies\ the\ collection\ behavior\ \r\n\ to\ apply\ a\ discount\ on\ the\ amount\ given.\r\n\ \r\n\ @author\ Alejandra\ Beltr\u00E1n\ -\ Adrian\ Ducuara\r\n\ @version\ 2025-2\r\n
 comment1.params=position\ tenges\ x\ y\ color
 comment1.target=Discount(int,\ int,\ int,\ int,\ java.lang.String)
+comment1.text=\r\n\ Creates\ a\ new\ Discount\ store.\r\n\ This\ store\ always\ uses\ the\ color\ orange\ to\ identify\ it\ visually.\r\n\ \r\n\ @param\ position\ logical\ position\ of\ the\ store\ in\ the\ route\r\n\ @param\ tenges\ \ \ amount\ of\ money\ the\ store\ starts\ with\r\n\ @param\ x\ \ \ \ \ \ \ \ X\ coordinate\ on\ screen\r\n\ @param\ y\ \ \ \ \ \ \ \ Y\ coordinate\ on\ screen\r\n\ @param\ color\ \ \ \ ignored\ parameter\ (the\ store\ is\ always\ orange)\r\n
 comment2.params=
 comment2.target=int\ collect()
+comment2.text=\r\n\ Collects\ money\ from\ the\ store\ but\ only\ gives\ 75%\ of\ it.\r\n\ The\ remaining\ 25%\ stays\ as\ a\ discount.\r\n\ \r\n\ @return\ 75%\ of\ the\ original\ collected\ amount\r\n
 numComments=3
